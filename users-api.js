@@ -23,13 +23,13 @@ app.use( async(ctx, next) => {
 })
 
 router.get('/api/v1.0/users', async ctx => {
-    ctx.set('Allow', 'GET, POST')    
+    ctx.set('Allow', 'GET')    
 	try {
 		if(ctx.get('error')) throw new Error(ctx.get('error'))
 		debugger
 		const users = await usersController.getAll()
 		ctx.status = status.OK
-		ctx.body = {status: 'success', message: {result: users}}
+		ctx.body = users
     } catch(err) {
 		ctx.status = status.NOT_FOUND
 		ctx.body = {status: 'error', message: err.message}
@@ -42,9 +42,9 @@ router.get('/api/v1.0/users/:user', async ctx => {
 		if(ctx.get('error')) throw new Error(ctx.get('error'))
 		ctx.status = status.OK
 		ctx.body = {status: 'success', message: {item: 'xxx'}}
-		const user = await usersController.getUser(ctx.params.user)
+		const user = await usersController.getById(ctx.params.user)
 		ctx.status = status.OK
-		ctx.body = {status: 'success', message: {user: user}}
+		ctx.body = user
     } catch(err) {
 		ctx.status = status.NOT_FOUND
 		ctx.body = {status: 'error', message: err.message}
@@ -56,7 +56,7 @@ router.post('/api/v1.0/users', async ctx => {
 	try {        
         if(ctx.get('error')) throw new Error(ctx.get('error'))
         
-		const newUser = await usersController.addUser(ctx.request)
+		const newUser = await usersController.add(ctx.request)
 		ctx.status = status.CREATED
 		ctx.body = {status: 'success', message: {user: newUser}}
     } catch(err) {

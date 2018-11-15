@@ -20,7 +20,7 @@ exports.addResourceToCollection = (database_url, collection_name, new_resource) 
             db.close();
             resolve(true)
         });
-      });
+    });
 })
 
 // Retrieve all resources from a given collection
