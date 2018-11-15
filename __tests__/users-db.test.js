@@ -1,34 +1,34 @@
 'use strict'
 
-const articlesAndEventsDB = require('../modules/articles-and-events-db')
+const usersDB = require('../modules/users-db')
 
 describe('Adding a new resource to a mongodb collection', async() => {
 
     afterEach(async() => {
-        // Function to find the article that the tests will add to the database
-        let findAddedArticle = articlesAndEventsDB.findResourceFromCollection("mongodb://localhost:27017/articles_and_events_database",
-                                                                                 "articles",
+        // Function to find the user that the tests will add to the database
+        let findAddedUser = usersDB.findResourceFromCollection("mongodb://localhost:27017/users_database",
+                                                                                 "users",
                                                                                  {"heading":"Test Heading"}).then((result) => result)
 
         // Call the function and wait for the response
-        let findAddedArticleResponse = await findAddedArticle
+        let findAddedUserResponse = await findAddedUser
 
-        // Save the id of the test article that was added
-        let addedArticleID = findAddedArticleResponse[findAddedArticleResponse.length-1]._id
+        // Save the id of the test user that was added
+        let addedUserID = findAddedUserResponse[findAddedUserResponse.length-1]._id
 
-        // Delete the test article so that it doesn't affect live database
-        articlesAndEventsDB.deleteResource("mongodb://localhost:27017/articles_and_events_database",
-                                           "articles",
-                                           addedArticleID)
+        // Delete the test user so that it doesn't affect live database
+        usersDB.deleteResource("mongodb://localhost:27017/users_database",
+                                           "users",
+                                           addedUserID)
     });    
 
-	test('Adding a new article inserts it into the database successfully', async done => {
+	test('Adding a new user inserts it into the database successfully', async done => {
 
         expect.assertions(1)
         
-        // Send a test article object to the correct database
-        const response = await articlesAndEventsDB.addResourceToCollection("mongodb://localhost:27017/articles_and_events_database",
-                                                                           "articles",
+        // Send a test user object to the correct database
+        const response = await usersDB.addResourceToCollection("mongodb://localhost:27017/users_database",
+                                                                           "users",
                                                                            {"heading":"Test Heading"})        
         
         // Expect a true boolean response if adding to mongodb was successful
@@ -44,24 +44,24 @@ describe('Requesting one resource from a mongodb collection', async() => {
 
     beforeEach(async() => {        
         // Add a new object to mongodb, which will be tested that it can retrieve the correct one
-        await articlesAndEventsDB.addResourceToCollection("mongodb://localhost:27017/articles_and_events_database",
-                                                          "articles",
+        await usersDB.addResourceToCollection("mongodb://localhost:27017/users_database",
+                                                          "users",
                                                           {"heading":"Test Heading"})
 
-        let findAddedArticle = articlesAndEventsDB.findResourceFromCollection("mongodb://localhost:27017/articles_and_events_database",
-                                                                                 "articles",
+        let findAddedUser = usersDB.findResourceFromCollection("mongodb://localhost:27017/users_database",
+                                                                                 "users",
                                                                                  {"heading":"Test Heading"}).then((result) => result)
 
-        let findAddedArticleResponse = await findAddedArticle
+        let findAddedUserResponse = await findAddedUser
 
-        // Save the id of the test article that was added
-        resourceIdToRequest = findAddedArticleResponse[findAddedArticleResponse.length-1]._id
+        // Save the id of the test user that was added
+        resourceIdToRequest = findAddedUserResponse[findAddedUserResponse.length-1]._id
     }); 
     
     afterEach(async() => {
-        // Delete the test article so that it doesn't affect live database
-        articlesAndEventsDB.deleteResource("mongodb://localhost:27017/articles_and_events_database",
-                                           "articles",
+        // Delete the test user so that it doesn't affect live database
+        usersDB.deleteResource("mongodb://localhost:27017/users_database",
+                                           "users",
                                            resourceIdToRequest)
     })
 
@@ -69,10 +69,10 @@ describe('Requesting one resource from a mongodb collection', async() => {
 
         expect.assertions(1)
         
-        // Send a test article object to the correct database
-        const response = await articlesAndEventsDB.getResourceFromCollection("mongodb://localhost:27017/articles_and_events_database",
-                                                                             "articles",
-                                                                             resourceIdToRequest).then((article) => article)      
+        // Send a test user object to the correct database
+        const response = await usersDB.getResourceFromCollection("mongodb://localhost:27017/users_database",
+                                                                             "users",
+                                                                             resourceIdToRequest).then((user) => user)      
         
         // Expect a true boolean response if adding to mongodb was successful
         expect(response.heading).toEqual("Test Heading")
@@ -87,8 +87,8 @@ describe('Requesting all resources from a mongodb collection', async() => {
 
         expect.assertions(1)
 
-        const response = await articlesAndEventsDB.getAllFromCollection("mongodb://localhost:27017/articles_and_events_database",
-                                                                        "articles").then((article) => article)      
+        const response = await usersDB.getAllFromCollection("mongodb://localhost:27017/users_database",
+                                                                        "users").then((user) => user)      
         
         expect(Array.isArray([response])).toBe(true);
         done()
@@ -101,24 +101,24 @@ describe('Updating a resource in a mongodb collection', async() => {
 
     beforeEach(async() => {        
         // Add a new object to mongodb, which will be tested that it can be updated in the test
-        await articlesAndEventsDB.addResourceToCollection("mongodb://localhost:27017/articles_and_events_database",
-                                                          "articles",
+        await usersDB.addResourceToCollection("mongodb://localhost:27017/users_database",
+                                                          "users",
                                                           {"heading":"Test Heading"})
 
-        let findAddedArticle = articlesAndEventsDB.findResourceFromCollection("mongodb://localhost:27017/articles_and_events_database",
-                                                                                 "articles",
+        let findAddedUser = usersDB.findResourceFromCollection("mongodb://localhost:27017/users_database",
+                                                                                 "users",
                                                                                  {"heading":"Test Heading"}).then((result) => result)
 
-        let findAddedArticleResponse = await findAddedArticle
+        let findAddedUserResponse = await findAddedUser
 
-        // Save the id of the test article that was added
-        resourceIdToUpdate = findAddedArticleResponse[findAddedArticleResponse.length-1]._id
+        // Save the id of the test user that was added
+        resourceIdToUpdate = findAddedUserResponse[findAddedUserResponse.length-1]._id
     }); 
     
     afterEach(async() => {
-        // Delete the test article so that it doesn't affect live database
-        articlesAndEventsDB.deleteResource("mongodb://localhost:27017/articles_and_events_database",
-                                           "articles",
+        // Delete the test user so that it doesn't affect live database
+        usersDB.deleteResource("mongodb://localhost:27017/users_database",
+                                           "users",
                                            resourceIdToUpdate)
     })
 
@@ -126,8 +126,8 @@ describe('Updating a resource in a mongodb collection', async() => {
 
         expect.assertions(1)
 
-        const updateResponse = await articlesAndEventsDB.updateResource("mongodb://localhost:27017/articles_and_events_database",
-                                                                  "articles",
+        const updateResponse = await usersDB.updateResource("mongodb://localhost:27017/users_database",
+                                                                  "users",
                                                                   resourceIdToUpdate,
                                                                   {"heading":"Updated Heading"}).then((response) => response)      
         
@@ -143,24 +143,24 @@ describe('Deleting a resource in a mongodb collection', async() => {
 
     beforeEach(async() => {        
         // Add a new object to mongodb, which will be tested that it can be updated in the test
-        await articlesAndEventsDB.addResourceToCollection("mongodb://localhost:27017/articles_and_events_database",
-                                                          "articles",
+        await usersDB.addResourceToCollection("mongodb://localhost:27017/users_database",
+                                                          "users",
                                                           {"heading":"Test Heading"})
 
-        let findAddedArticle = articlesAndEventsDB.findResourceFromCollection("mongodb://localhost:27017/articles_and_events_database",
-                                                                                 "articles",
+        let findAddedUser = usersAndEventsDB.findResourceFromCollection("mongodb://localhost:27017/users_database",
+                                                                                 "users",
                                                                                  {"heading":"Test Heading"}).then((result) => result)
 
-        let findAddedArticleResponse = await findAddedArticle
+        let findAddedUserResponse = await findAddedUser
 
-        // Save the id of the test article that was added
-        resourceIdToDelete = findAddedArticleResponse[findAddedArticleResponse.length-1]._id
+        // Save the id of the test user that was added
+        resourceIdToDelete = findAddedUserResponse[findAddedUserResponse.length-1]._id
     }); 
     
     afterEach(async() => {
-        // Delete the test article so that it doesn't affect live database
-        articlesAndEventsDB.deleteResource("mongodb://localhost:27017/articles_and_events_database",
-                                           "articles",
+        // Delete the test user so that it doesn't affect live database
+        usersDB.deleteResource("mongodb://localhost:27017/users_database",
+                                           "users",
                                            resourceIdToDelete)
     })
 
@@ -168,8 +168,8 @@ describe('Deleting a resource in a mongodb collection', async() => {
 
         expect.assertions(1)
 
-        const deleteResponse = await articlesAndEventsDB.deleteResource("mongodb://localhost:27017/articles_and_events_database",
-                                                                  "articles",
+        const deleteResponse = await usersDB.deleteResource("mongodb://localhost:27017/users_database",
+                                                                  "users",
                                                                   resourceIdToDelete).then((response) => response)      
         
         expect(deleteResponse).toBeTruthy()
@@ -185,26 +185,26 @@ describe('Finding a resource in a mongodb collection', async() => {
 
     beforeEach(async() => {        
         // Add a new object to mongodb, which will be tested that it can be updated in the test
-        await articlesAndEventsDB.addResourceToCollection("mongodb://localhost:27017/articles_and_events_database",
-                                                          "articles",
+        await usersDB.addResourceToCollection("mongodb://localhost:27017/users_database",
+                                                          "users",
                                                           {"heading":"Test Heading"})
 
-        let findAddedArticle = articlesAndEventsDB.findResourceFromCollection("mongodb://localhost:27017/articles_and_events_database",
-                                                                                 "articles",
+        let findAddedUser = usersDB.findResourceFromCollection("mongodb://localhost:27017/users_database",
+                                                                                 "users",
                                                                                  {"heading":"Test Heading"}).then((result) => result)
 
-        let findAddedArticleResponse = await findAddedArticle
+        let findAddedUserResponse = await findAddedUser
 
-        resourceToFind = findAddedArticleResponse
+        resourceToFind = findAddedUserResponse
         
-        // Save the id of the test article that was added
-        resourceToFindId = findAddedArticleResponse[findAddedArticleResponse.length-1]._id
+        // Save the id of the test user that was added
+        resourceToFindId = findAddedUserResponse[findAddedUserResponse.length-1]._id
     }); 
     
     afterEach(async() => {
-        // Delete the test article so that it doesn't affect live database
-        articlesAndEventsDB.deleteResource("mongodb://localhost:27017/articles_and_events_database",
-                                           "articles",
+        // Delete the test user so that it doesn't affect live database
+        usersDB.deleteResource("mongodb://localhost:27017/users_database",
+                                           "users",
                                            resourceToFindId)
     })
 
@@ -212,8 +212,8 @@ describe('Finding a resource in a mongodb collection', async() => {
 
         expect.assertions(1)
 
-        const findResponse = await articlesAndEventsDB.findResourceFromCollection("mongodb://localhost:27017/articles_and_events_database",
-                                                                  "articles",
+        const findResponse = await usersDB.findResourceFromCollection("mongodb://localhost:27017/users_database",
+                                                                  "users",
                                                                   {"heading":"Test Heading"}).then((response) => response)      
         
         expect(findResponse).toEqual(resourceToFind)
