@@ -1,26 +1,28 @@
-const database_url = "mongodb://localhost:27017/users_database"
-const users_collection = "users"
+'use strict'
+
+const databaseURL = "mongodb://localhost:27017/users_database"
+const usersCollection = "users"
 
 const database = require('./users-db')
 
 // Function to add a new user
 exports.add = async(userObject) => {
     
-    let addUser = database.addResourceToCollection(database_url, users_collection, userObject)
+    const addUser = database.addResourceToCollection(databaseURL, usersCollection, userObject)
                         .then((result) => result)
 
-    let addUserResponse = await addUser
+    const addUserResponse = await addUser
 
     return addUserResponse
 }
 
 // Function to retrieve one user
-exports.getById = async(userId) => {
+exports.getById = async(userID) => {
 
-    let getUser = database.getResourceFromCollection(database_url, users_collection, userId)
+    const getUser = database.getResourceFromCollection(databaseURL, usersCollection, userID)
                         .then((user) => user)
     
-    let user = await getUser
+    const user = await getUser
 
     return user
 }
@@ -30,23 +32,23 @@ exports.getAll = async() => {
 
     // Declare a function which will call the controller for all users
     // Returns a Promise object with either a resolve or reject value
-    let results = database.getAllFromCollection(database_url, users_collection)
+    const results = database.getAllFromCollection(databaseURL, usersCollection)
                     .then((results) => results) // Obtains the result from the Promise object
     
     // Calls the results function, waits for response before continuing
-    let final_result = await results
+    const finalResult = await results
 
     // Return the list of users
-    return final_result
+    return finalResult
 }
 
 // Function to update a user
 exports.update = async(userID, newUserDetailsObject) => {
 
-    let updateUser = database.updateResource(database_url, users_collection, userID, newUserDetailsObject)
+    const updateUser = database.updateResource(databaseURL, usersCollection, userID, newUserDetailsObject)
                             .then((user) => user)
 
-    let updateUserResponse = await updateUser
+    const updateUserResponse = await updateUser
 
     return updateUserResponse
 }
@@ -54,10 +56,10 @@ exports.update = async(userID, newUserDetailsObject) => {
 // Function to delete a user
 exports.delete = async(userID) => {
 
-    let deleteUser = database.deleteResource(database_url, users_collection, userID)
+    const deleteUser = database.deleteResource(databaseURL, usersCollection, userID)
                             .then((user) => user)
 
-    let deleteUserResponse = await deleteUser
+    const deleteUserResponse = await deleteUser
 
     return deleteUserResponse
 }
