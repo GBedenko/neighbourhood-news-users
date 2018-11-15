@@ -147,7 +147,7 @@ describe('Deleting a resource in a mongodb collection', async() => {
                                                           "users",
                                                           {"heading":"Test Heading"})
 
-        let findAddedUser = usersAndEventsDB.findResourceFromCollection("mongodb://localhost:27017/users_database",
+        let findAddedUser = usersDB.findResourceFromCollection("mongodb://localhost:27017/users_database",
                                                                                  "users",
                                                                                  {"heading":"Test Heading"}).then((result) => result)
 
