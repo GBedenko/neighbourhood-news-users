@@ -8,7 +8,7 @@ describe('Adding a new resource to a mongodb collection', async() => {
         // Function to find the user that the tests will add to the database
         let findAddedUser = usersDB.findResourceFromCollection("mongodb://localhost:27017/users_database",
                                                                                  "users",
-                                                                                 {"heading":"Test Heading"}).then((result) => result)
+                                                                                 {"username":"test123"}).then((result) => result)
 
         // Call the function and wait for the response
         let findAddedUserResponse = await findAddedUser
@@ -29,7 +29,7 @@ describe('Adding a new resource to a mongodb collection', async() => {
         // Send a test user object to the correct database
         const response = await usersDB.addResourceToCollection("mongodb://localhost:27017/users_database",
                                                                            "users",
-                                                                           {"heading":"Test Heading"})        
+                                                                           {"username":"test123"})        
         
         // Expect a true boolean response if adding to mongodb was successful
         expect(response).toBeTruthy()
@@ -46,11 +46,11 @@ describe('Requesting one resource from a mongodb collection', async() => {
         // Add a new object to mongodb, which will be tested that it can retrieve the correct one
         await usersDB.addResourceToCollection("mongodb://localhost:27017/users_database",
                                                           "users",
-                                                          {"heading":"Test Heading"})
+                                                          {"username":"test123"})
 
         let findAddedUser = usersDB.findResourceFromCollection("mongodb://localhost:27017/users_database",
                                                                                  "users",
-                                                                                 {"heading":"Test Heading"}).then((result) => result)
+                                                                                 {"username":"test123"}).then((result) => result)
 
         let findAddedUserResponse = await findAddedUser
 
@@ -75,7 +75,7 @@ describe('Requesting one resource from a mongodb collection', async() => {
                                                                              resourceIdToRequest).then((user) => user)      
         
         // Expect a true boolean response if adding to mongodb was successful
-        expect(response.heading).toEqual("Test Heading")
+        expect(response.username).toEqual("test123")
         
         done()
 	})
@@ -103,11 +103,11 @@ describe('Updating a resource in a mongodb collection', async() => {
         // Add a new object to mongodb, which will be tested that it can be updated in the test
         await usersDB.addResourceToCollection("mongodb://localhost:27017/users_database",
                                                           "users",
-                                                          {"heading":"Test Heading"})
+                                                          {"username":"test123"})
 
         let findAddedUser = usersDB.findResourceFromCollection("mongodb://localhost:27017/users_database",
                                                                                  "users",
-                                                                                 {"heading":"Test Heading"}).then((result) => result)
+                                                                                 {"username":"test123"}).then((result) => result)
 
         let findAddedUserResponse = await findAddedUser
 
@@ -129,7 +129,7 @@ describe('Updating a resource in a mongodb collection', async() => {
         const updateResponse = await usersDB.updateResource("mongodb://localhost:27017/users_database",
                                                                   "users",
                                                                   resourceIdToUpdate,
-                                                                  {"heading":"Updated Heading"}).then((response) => response)      
+                                                                  {"username":"different123"}).then((response) => response)      
         
         expect(updateResponse).toBeTruthy()
 
@@ -145,11 +145,11 @@ describe('Deleting a resource in a mongodb collection', async() => {
         // Add a new object to mongodb, which will be tested that it can be updated in the test
         await usersDB.addResourceToCollection("mongodb://localhost:27017/users_database",
                                                           "users",
-                                                          {"heading":"Test Heading"})
+                                                          {"username":"test123"})
 
         let findAddedUser = usersDB.findResourceFromCollection("mongodb://localhost:27017/users_database",
                                                                                  "users",
-                                                                                 {"heading":"Test Heading"}).then((result) => result)
+                                                                                 {"username":"test123"}).then((result) => result)
 
         let findAddedUserResponse = await findAddedUser
 
@@ -187,11 +187,11 @@ describe('Finding a resource in a mongodb collection', async() => {
         // Add a new object to mongodb, which will be tested that it can be updated in the test
         await usersDB.addResourceToCollection("mongodb://localhost:27017/users_database",
                                                           "users",
-                                                          {"heading":"Test Heading"})
+                                                          {"username":"test123"})
 
         let findAddedUser = usersDB.findResourceFromCollection("mongodb://localhost:27017/users_database",
                                                                                  "users",
-                                                                                 {"heading":"Test Heading"}).then((result) => result)
+                                                                                 {"username":"test123"}).then((result) => result)
 
         let findAddedUserResponse = await findAddedUser
 
@@ -214,7 +214,7 @@ describe('Finding a resource in a mongodb collection', async() => {
 
         const findResponse = await usersDB.findResourceFromCollection("mongodb://localhost:27017/users_database",
                                                                   "users",
-                                                                  {"heading":"Test Heading"}).then((response) => response)      
+                                                                  {"username":"test123"}).then((response) => response)      
         
         expect(findResponse).toEqual(resourceToFind)
 
