@@ -12,7 +12,7 @@ exports.add = async(userObject) => {
                         .then((result) => result)
 
     const addUserResponse = await addUser
-
+    
     return addUserResponse
 }
 
@@ -28,17 +28,28 @@ exports.getById = async(userID) => {
 }
 
 // Function to retrieve all users
-exports.getAll = async() => {
+exports.getAll = async(userObject) => {
 
     // Declare a function which will call the controller for all users
     // Returns a Promise object with either a resolve or reject value
-    const results = database.getAllFromCollection(databaseURL, usersCollection)
+    const results = database.findResourceFromCollection(databaseURL, usersCollection, userObject)
                     .then((results) => results) // Obtains the result from the Promise object
     
     // Calls the results function, waits for response before continuing
     const finalResult = await results
 
     // Return the list of users
+    return finalResult
+}
+
+// Function to retrieve a user based on query object
+exports.getByQuery = async(userObject) => {
+
+    const results = database.findResourceFromCollection(databaseURL, usersCollection, userObject)
+                    .then((results) => results)
+    
+    const finalResult = await results
+
     return finalResult
 }
 

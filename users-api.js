@@ -2,6 +2,8 @@
 
 'use strict'
 
+console.log("Booting Up Users API Server...")
+
 const Koa = require('koa')
 const Router = require('koa-router')
 const bodyParser = require('koa-bodyparser')
@@ -12,7 +14,7 @@ const router = new Router()
 
 const status = require('http-status-codes')
 
-const port = 8082
+const port = 8083
 
 const usersController = require('./modules/users-controller')
 
@@ -24,10 +26,11 @@ app.use( async(ctx, next) => {
 
 router.get('/api/v1.0/users', async ctx => {
     ctx.set('Allow', 'GET')    
-	try {
-		if(ctx.get('error')) throw new Error(ctx.get('error'))
+	try {		
+		if(ctx.get('error')) throw new Error(ctx.get('error'))		
 		debugger
-		const users = await usersController.getAll()
+
+		const users = await usersController.getAll(ctx.query)
 		ctx.status = status.OK
 		ctx.body = users
     } catch(err) {
@@ -54,11 +57,11 @@ router.get('/api/v1.0/users/:user_id', async ctx => {
 router.post('/api/v1.0/users', async ctx => {
     ctx.set('Allow', 'POST')    
 	try {        
-        if(ctx.get('error')) throw new Error(ctx.get('error'))
-        
-		const newUser = await usersController.add(ctx.request)
+		if(ctx.get('error')) throw new Error(ctx.get('error'))
+		
+		const addUserResponse = await usersController.add(ctx.request.body)
 		ctx.status = status.CREATED
-		ctx.body = {status: 'success', message: {user: newUser}}
+		ctx.body = {status: 'success', userAddedSuccessfully: addUserResponse}
     } catch(err) {
 		ctx.status = status.BAD_REQUEST
 		ctx.body = {status: 'error', message: err.message}
