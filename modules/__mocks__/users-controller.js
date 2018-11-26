@@ -49,3 +49,5 @@ usersController.delete = async(userID) => {
 
     return response
 }
+
+module.exports = usersController;
