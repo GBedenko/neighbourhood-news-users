@@ -37,7 +37,7 @@ router.get('/api/v1.0/users', async ctx => {
 	ctx.set('Allow', 'GET')
 		
 	// Request the users object from the controller
-	const users = await usersController.getAll()
+	const users = await usersController.getAll(ctx.request.body)
 
 	// Assign the status code to 200 and response body object as all the users
 	ctx.status = status.OK
