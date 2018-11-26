@@ -25,13 +25,14 @@ app.use( async(ctx, next) => {
 })
 
 router.get('/api/v1.0/users', async ctx => {
-    ctx.set('Allow', 'GET')    
-	try {		
-		if(ctx.get('error')) throw new Error(ctx.get('error'))		
+	ctx.set('Allow', 'GET')
+	
+	try {
+		if(ctx.get('error')) throw new Error(ctx.get('error'))
 		debugger
-
-		const users = await usersController.getAll(ctx.query)
+		const users = await usersController.getAll(ctx.request.body)
 		ctx.status = status.OK
+		
 		ctx.body = users
     } catch(err) {
 		ctx.status = status.NOT_FOUND

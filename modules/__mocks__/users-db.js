@@ -33,4 +33,10 @@ usersDB.deleteResource = (databaseURL, collectionName, resourceID) => new Promis
     resolve(true)
 })
 
+// Find a resource by a query object
+usersDB.findResourceFromCollection = (databaseURL, collectionName, resourceObject) => new Promise((resolve, reject) => {
+
+    resolve([{"_id": 1234 , "username": "test123"}])
+})
+
 module.exports = usersDB;
