@@ -136,7 +136,7 @@ router.put('/api/v1.0/users/:user_id', async ctx => {
 
 // DELETE Request to remove an existing User
 router.del('/api/v1.0/users/:user_id', async ctx => {
-
+	
 	// Allow only delete requests to this endpoint function
 	ctx.set('Allow', 'DELETE')
 	
