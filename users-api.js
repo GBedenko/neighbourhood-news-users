@@ -23,12 +23,14 @@ app.use( async(ctx, next) => {
 })
 
 router.get('/api/v1.0/users', async ctx => {
-    ctx.set('Allow', 'GET')    
+	ctx.set('Allow', 'GET')
+	
 	try {
 		if(ctx.get('error')) throw new Error(ctx.get('error'))
 		debugger
-		const users = await usersController.getAll()
+		const users = await usersController.getAll(ctx.request.body)
 		ctx.status = status.OK
+		
 		ctx.body = users
     } catch(err) {
 		ctx.status = status.NOT_FOUND
@@ -54,9 +56,9 @@ router.get('/api/v1.0/users/:user_id', async ctx => {
 router.post('/api/v1.0/users', async ctx => {
     ctx.set('Allow', 'POST')    
 	try {        
-        if(ctx.get('error')) throw new Error(ctx.get('error'))
-        
-		const newUser = await usersController.add(ctx.request)
+		if(ctx.get('error')) throw new Error(ctx.get('error'))
+		
+		const newUser = await usersController.add(ctx.request.body)
 		ctx.status = status.CREATED
 		ctx.body = {status: 'success', message: {user: newUser}}
     } catch(err) {
