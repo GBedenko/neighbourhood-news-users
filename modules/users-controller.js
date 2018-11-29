@@ -42,17 +42,6 @@ exports.getAll = async(queryObject) => {
     return finalResult
 }
 
-// Function to retrieve a user based on query object
-exports.getByQuery = async(userObject) => {
-
-    const results = database.findResourceFromCollection(databaseURL, usersCollection, userObject)
-                    .then((results) => results)
-    
-    const finalResult = await results
-
-    return finalResult
-}
-
 // Function to update a user
 exports.update = async(userID, newUserDetailsObject) => {
 
