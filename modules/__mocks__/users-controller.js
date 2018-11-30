@@ -13,7 +13,7 @@ usersController.add = async(userObject) => {
 // Mock retrieving one user
 usersController.getById = async(userID) => {
 
-    const response = {"_id": 1234, username: "test123"}
+    const response = {"_id": 1234, username: "test123", password: "$2b$10$suODIB3P8hv379GqpHQaIukH9F2Q/fJ8//.mjp.SV91hyZrpUyQHe"}
 
     return response
 }
@@ -21,7 +21,7 @@ usersController.getById = async(userID) => {
 // Mock retrieving all users
 usersController.getAll = async(queryObject) => {
 
-    const response = [{"_id": 1234, "username": "test123"}]
+    const response = [{"_id": 1234, "username": "test123", password: "$2b$10$suODIB3P8hv379GqpHQaIukH9F2Q/fJ8//.mjp.SV91hyZrpUyQHe"}]
 
     return response
 }
@@ -29,7 +29,7 @@ usersController.getAll = async(queryObject) => {
 // Mock retrieving a user based on query object
 usersController.getByQuery = async(userObject) => {
 
-    const response = {"_id": 1234, username: "test123"}
+    const response = {"_id": 1234, username: "test123", password: "$2b$10$suODIB3P8hv379GqpHQaIukH9F2Q/fJ8//.mjp.SV91hyZrpUyQHe"}
 
     return response
 }

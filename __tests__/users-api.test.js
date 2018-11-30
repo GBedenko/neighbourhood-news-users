@@ -26,13 +26,41 @@ describe('GET /users endpoint', async() => {
 
     // Test that the request recieves the correct JSON response
 	test('Requesting all users returns a json object', async done => {
-
+        
         const response = await request(usersAPI).get("/api/v1.0/users");
 
-        expect(response.body).toEqual([{"_id": 1234, "username": "test123"}])
+        expect(response.body).toEqual([{"_id": 1234, "username": "test123", password: "$2b$10$suODIB3P8hv379GqpHQaIukH9F2Q/fJ8//.mjp.SV91hyZrpUyQHe"}])
 
         done()
 	})
+})
+
+// Test HEAD /users
+describe('HEAD /users/:username endpoint', async() => {
+
+    afterEach(() => {
+        usersAPI.close()
+    })
+
+    // Test that a request recieves the correct status code
+	test('Requesting authentication for a valid user responds with 200 status code', async done => {
+
+        const response = await request(usersAPI).head("/api/v1.0/users/test123").set('Authorization', 'Basic dGVzdDEyMzp0ZXN0')
+
+        expect(response.status).toEqual(200)
+
+        done()
+    }) 
+
+    // Test that a request recieves the correct status code
+	test('Requesting authentication for an invalid user responds with 401 status code', async done => {
+
+        const response = await request(usersAPI).head("/api/v1.0/users/test123").set('Authorization', 'Basic dGVzdDEyMzp0ZXN0')
+
+        expect(response.status).toEqual(200)
+
+        done()
+    })    
 })
 
 // Test GET /users/:user_id
@@ -57,7 +85,7 @@ describe('GET /users/:user_id endpoint', async() => {
 
         const response = await request(usersAPI).get("/api/v1.0/users/123");
 
-        expect(response.body).toEqual({"_id": 1234, "username": "test123"})
+        expect(response.body).toEqual({"_id": 1234, "username": "test123", password: "$2b$10$suODIB3P8hv379GqpHQaIukH9F2Q/fJ8//.mjp.SV91hyZrpUyQHe"})
 
         done()
 	})

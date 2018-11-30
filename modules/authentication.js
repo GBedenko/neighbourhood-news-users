@@ -18,10 +18,10 @@ exports.checkUserCredentials = async(authorizationHeader) => {
 
     // Retrieve the user from the db that matches the username the user entered
     const existingUser = await usersController.getAll({username: username})
-
+    console.log(existingUser)
     // Compare the password the user entered with the one stored in db for the user
     const passwordCorrect = await bcrypt.compare(password, existingUser[0].password)
-
+    
     if(passwordCorrect) {
         return true
     } else {
