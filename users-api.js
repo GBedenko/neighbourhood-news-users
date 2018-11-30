@@ -58,8 +58,7 @@ router.head('/api/v1.0/users/:user', async ctx => {
 	
 	// Using authentication module, check if the user exists for not
 	const userExists = await authentication.checkUserCredentials(authorizationHeader)
-	console.log("user exists:")
-	console.log(userExists)
+	
 	if(userExists) {
 
 		// If user exists, return status 200
