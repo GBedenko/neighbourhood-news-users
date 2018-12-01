@@ -7,7 +7,11 @@ const database = require('./users-db')
 
 // Function to add a new user
 exports.add = async(userObject) => {
-    
+
+    userObject.admin = false
+    userObject.likes = 0
+    userObject.dislikes = 0
+
     const addUser = database.addResourceToCollection(databaseURL, usersCollection, userObject)
                         .then((result) => result)
 

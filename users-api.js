@@ -47,7 +47,7 @@ router.get('/api/v1.0/users', async ctx => {
 
 // HEAD Request to authenticate/check if a user exists
 router.head('/api/v1.0/users/:user', async ctx => {
-	console.log(ctx)
+
 	let statusCode
 	let bodyMessage
 	// Allow only head requests to this endpoint function
