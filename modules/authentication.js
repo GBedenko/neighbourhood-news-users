@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt')
 const usersController = require('./users-controller')
 
 exports.checkUserCredentials = async(authorizationHeader) => {
-    
+
     // Split word 'Basic' from the Authorization header
     const [, hash] = authorizationHeader.split(' ')
     
@@ -15,25 +15,26 @@ exports.checkUserCredentials = async(authorizationHeader) => {
     
     // Split the username and password by the colon seperating them
     const [username, password] = userCredentials.split(':')
-
+    
     // Retrieve the user from the db that matches the username the user entered
     const existingUser = await usersController.getAll({username: username})
-    console.log(existingUser)
-    // Compare the password the user entered with the one stored in db for the user
-    const passwordCorrect = await bcrypt.compare(password, existingUser[0].password)
-    
-    if(passwordCorrect) {
-        return true
+
+    /*istanbul ignore next*/
+    if(existingUser.length > 0) {
+
+        // Compare the password the user entered with the one stored in db for the user
+        const passwordCorrect = await bcrypt.compare(password, existingUser[0].password)
+        
+        /*istanbul ignore next*/
+        if(passwordCorrect) {
+            return true
+        } else {            
+            /*istanbul ignore next*/
+            return false
+        }    
     } else {
+        /*istanbul ignore next*/
         return false
-    }    
+    }
+    
 }
-
-	// // Hash the password
-	// const passwordHash = bcrypt.hash(userObject.password, 10)
-    // delete userObject.password
-
-    // const hash = await bcrypt.hash(credentials.password, saltRounds)
-	// profile.password = hash
-	// await persist.setItem(credentials.username, profile)
-

@@ -92,7 +92,7 @@ router.get('/api/v1.0/users/:user_id', async ctx => {
 
 // POST Request for a new User
 router.post('/api/v1.0/users', async ctx => {
-
+	
 	// Allow only post requests to this endpoint function
 	ctx.set('Allow', 'POST')
 	

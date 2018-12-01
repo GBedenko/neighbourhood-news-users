@@ -21,7 +21,8 @@ usersController.getById = async(userID) => {
 // Mock retrieving all users
 usersController.getAll = async(queryObject) => {
 
-    const response = [{"_id": 1234, "username": "test123", password: "$2b$10$suODIB3P8hv379GqpHQaIukH9F2Q/fJ8//.mjp.SV91hyZrpUyQHe"}]
+    const response = [{"_id": 1234, "username": "test123", password: "$2b$10$suODIB3P8hv379GqpHQaIukH9F2Q/fJ8//.mjp.SV91hyZrpUyQHe"},
+                      {"_id": 2345, "username": "test123", password: "$2b$10$suODIB3P8hv379GqpHQaIukH9F2Q/fJ8//.mjp.SV91hyZrpUyQHe"}]
 
     return response
 }
@@ -50,4 +51,4 @@ usersController.delete = async(userID) => {
     return response
 }
 
-module.exports = usersController;
+module.exports = usersController
