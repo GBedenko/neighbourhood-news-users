@@ -22,6 +22,7 @@ const port = 8083
 
 // Import own module for communicating with users backend
 const usersController = require('./modules/users-controller')
+const authentication = require('./modules/authentication')
 
 // Allow connections only from localhost, inform client requests the content type is json
 app.use( async(ctx, next) => {
@@ -44,6 +45,37 @@ router.get('/api/v1.0/users', async ctx => {
 	ctx.body = users
 })
 
+// HEAD Request to authenticate/check if a user exists
+router.head('/api/v1.0/users/:user', async ctx => {
+
+	let statusCode
+	let bodyMessage
+	// Allow only head requests to this endpoint function
+	ctx.set('Allow', 'HEAD')
+
+	// Retrieve the authorization credentials used by the client's request
+	const authorizationHeader = ctx.get('Authorization')
+	
+	// Using authentication module, check if the user exists for not
+	const userExists = await authentication.checkUserCredentials(authorizationHeader)
+	
+	if(userExists) {
+
+		// If user exists, return status 200
+		statusCode = status.OK
+		bodyMessage = {Authorised: true}
+
+	} else {
+
+		// If user doesn't exist, return status 401
+		statusCode = status.UNAUTHORIZED
+		bodyMessage = {Authorised: false}
+	}
+
+	ctx.status = statusCode
+	ctx.body = bodyMessage
+})
+
 // GET Request for one User
 router.get('/api/v1.0/users/:user_id', async ctx => {
 
@@ -60,7 +92,7 @@ router.get('/api/v1.0/users/:user_id', async ctx => {
 
 // POST Request for a new User
 router.post('/api/v1.0/users', async ctx => {
-
+	
 	// Allow only post requests to this endpoint function
 	ctx.set('Allow', 'POST')
 	

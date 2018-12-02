@@ -7,6 +7,10 @@ const database = require('./users-db')
 
 // Function to add a new user
 exports.add = async(userObject) => {
+
+    userObject.admin = false
+    userObject.likes = 0
+    userObject.dislikes = 0
     
     const addUser = database.addResourceToCollection(databaseURL, usersCollection, userObject)
                         .then((result) => result)
@@ -32,7 +36,7 @@ exports.getAll = async(queryObject) => {
 
     // Declare a function which will call the controller for all users
     // Returns a Promise object with either a resolve or reject value
-    const results = database.findResourceFromCollection(databaseURL, usersCollection, queryObject)
+    const results = database.getAllFromCollection(databaseURL, usersCollection, queryObject)
                     .then((results) => results) // Obtains the result from the Promise object
     
     // Calls the results function, waits for response before continuing
