@@ -17,7 +17,7 @@ exports.addResourceToCollection = (databaseURL, collectionName, newResource) => 
 
 		if(err)	reject(new Error('Unable to connect to MongoDB'))
 
-		try {			
+		try {
 			const dbo = db.db(databaseName)
 
 			dbo.collection(collectionName).insertOne(newResource, (err, res) => {

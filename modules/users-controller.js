@@ -14,6 +14,7 @@ exports.add = async(userObject) => {
 
 	const addUser = database.addResourceToCollection(databaseURL, usersCollection, userObject)
 		.then((result) => result)
+		.catch((reason) => reason)
 
 	const addUserResponse = await addUser
 
@@ -25,6 +26,7 @@ exports.getById = async(userID) => {
 
 	const getUser = database.getResourceFromCollection(databaseURL, usersCollection, userID)
 		.then((user) => user)
+		.catch((reason) => reason)
 
 	const user = await getUser
 
@@ -51,6 +53,7 @@ exports.update = async(userID, newUserDetailsObject) => {
 
 	const updateUser = database.updateResource(databaseURL, usersCollection, userID, newUserDetailsObject)
 		.then((user) => user)
+		.catch((reason) => reason)
 
 	const updateUserResponse = await updateUser
 
@@ -62,6 +65,7 @@ exports.delete = async(userID) => {
 
 	const deleteUser = database.deleteResource(databaseURL, usersCollection, userID)
 		.then((user) => user)
+		.catch((reason) => reason)
 
 	const deleteUserResponse = await deleteUser
 
