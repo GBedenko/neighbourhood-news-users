@@ -221,3 +221,72 @@ describe('Finding a resource in a mongodb collection', async() => {
         done()
 	})
 })
+
+describe('Requesting database interactions with incorrect credentials', async() => {
+
+    test('Adding a new user with incorrect database credentials returns a rejected database connection', async done => {
+        
+        // Send a test user object to the correct database
+        const response = await usersDB.addResourceToCollection("mongodb://wrongurl:27017/users_database",
+                                                                           "users",
+                                                                           {"username":"test123"})
+                                                                           .then((result) => result)
+                                                                           .catch((reason) => reason)       
+        
+        expect(response).toEqual(Error('Unable to connect to MongoDB'))
+        
+        done()
+    })
+    
+    test('Requesting a user with incorrect database credentials returns a rejected database connection', async done => {
+        
+        const response = await usersDB.getResourceFromCollection("mongodb://wrongurl:27017/users_database",
+                                                                             "users",
+                                                                             1234)
+                                                                             .then((response) => response) 
+                                                                             .catch((reason) => reason)      
+        
+        expect(response).toEqual(Error('Unable to connect to MongoDB'))
+        
+        done()
+    })
+    
+    test('Requesting all users with incorrect database credentials returns a rejected database connection', async done => {
+        
+        const response = await usersDB.getAllFromCollection("mongodb://wrongurl:27017/users_database",
+                                                                             "users")
+                                                                             .then((response) => response) 
+                                                                             .catch((reason) => reason)      
+        
+        expect(response).toEqual(Error('Unable to connect to MongoDB'))
+        
+        done()
+    })
+    
+    test('Updating a user with incorrect database credentials returns a rejected database connection', async done => {
+        
+        const response = await usersDB.updateResource("mongodb://wrongurl:27017/users_database",
+                                                                             "users",
+                                                                             1234,
+                                                                             {"username":"test234"})
+                                                                             .then((response) => response) 
+                                                                             .catch((reason) => reason)      
+        
+        expect(response).toEqual(Error('Unable to connect to MongoDB'))
+        
+        done()
+	})
+    
+    test('Deleting a user with incorrect database credentials returns a rejected database connection', async done => {
+        
+        const response = await usersDB.deleteResource("mongodb://wrongurl:27017/users_database",
+                                                                             "users",
+                                                                             1234)
+                                                                             .then((response) => response) 
+                                                                             .catch((reason) => reason)      
+        
+        expect(response).toEqual(Error('Unable to connect to MongoDB'))
+        
+        done()
+	})
+})

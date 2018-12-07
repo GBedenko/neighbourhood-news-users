@@ -2,7 +2,7 @@
 
 'use strict'
 
-console.log("Booting Up Users API Server...")
+console.log('Booting Up Users API Server...')
 
 // Import koa packages
 const Koa = require('koa')
@@ -36,7 +36,7 @@ router.get('/api/v1.0/users', async ctx => {
 
 	// Allow only get requests to this endpoint function
 	ctx.set('Allow', 'GET')
-		
+
 	// Request the users object from the controller
 	const users = await usersController.getAll(ctx.request.body)
 
@@ -55,10 +55,10 @@ router.head('/api/v1.0/users/:user', async ctx => {
 
 	// Retrieve the authorization credentials used by the client's request
 	const authorizationHeader = ctx.get('Authorization')
-	
+
 	// Using authentication module, check if the user exists for not
 	const userExists = await authentication.checkUserCredentials(authorizationHeader)
-	
+
 	if(userExists) {
 
 		// If user exists, return status 200
@@ -81,7 +81,7 @@ router.get('/api/v1.0/users/:user_id', async ctx => {
 
 	// Allow only get requests to this endpoint function
 	ctx.set('Allow', 'GET')
-	
+
 	// Request one user object from the controller using the provided id
 	const user = await usersController.getById(ctx.params.user_id)
 
@@ -92,16 +92,22 @@ router.get('/api/v1.0/users/:user_id', async ctx => {
 
 // POST Request for a new User
 router.post('/api/v1.0/users', async ctx => {
-	
+
 	// Allow only post requests to this endpoint function
 	ctx.set('Allow', 'POST')
-	
+
 	// Send the new user object to the controller using the client request body
 	const addUserResponse = await usersController.add(ctx.request.body)
 
-	// Assign the status code to 201 and response body object as a boolean to confirm the user was added
-	ctx.status = status.CREATED
-	ctx.body = {status: 'success', userAddedSuccessfully: addUserResponse}
+	if(addUserResponse) {
+		// Assign the status code to 201 and response body object as a boolean to confirm the user was added
+		ctx.status = status.CREATED
+		ctx.body = {status: 'success', userAddedSuccessfully: addUserResponse}
+	} else {
+
+		ctx.status = status.BAD_REQUEST
+		ctx.body = {status: 'fail', userAddedSuccessfully: addUserResponse}
+	}
 })
 
 // PUT Request to update an existing User
@@ -113,23 +119,33 @@ router.put('/api/v1.0/users/:user_id', async ctx => {
 	// Send the updated user object to the controller using the client request body for the provided user id
 	const updateUserResponse = await usersController.update(ctx.params.user_id, ctx.request.body)
 
-	// Assign the status code to 201 and response body object as a boolean to confirm the user was updated
-	ctx.status = status.CREATED
-	ctx.body = {status: 'success', userUpdatedSuccessfully: updateUserResponse}
+	if(updateUserResponse) {
+		// Assign the status code to 201 and response body object as a boolean to confirm the user was updated
+		ctx.status = status.CREATED
+		ctx.body = {status: 'success', userUpdatedSuccessfully: updateUserResponse}
+	} else {
+		ctx.status = status.BAD_REQUEST
+		ctx.body = {status: 'fail', userUpdatedSuccessfully: updateUserResponse}
+	}
 })
 
 // DELETE Request to remove an existing User
 router.del('/api/v1.0/users/:user_id', async ctx => {
-	
+
 	// Allow only delete requests to this endpoint function
 	ctx.set('Allow', 'DELETE')
-		
+
 	// Request the provided user id's object to be deleted by the controller
 	const deleteUserResponse = await usersController.delete(ctx.params.user_id)
 
-	// Assign the status code to 200 and response body object as a boolean to confirm the user was deleted
-	ctx.status = status.OK
-	ctx.body = {status: 'success', userDeletedSuccessfully: deleteUserResponse}
+	if(deleteUserResponse) {
+		// Assign the status code to 200 and response body object as a boolean to confirm the user was deleted
+		ctx.status = status.OK
+		ctx.body = {status: 'success', userDeletedSuccessfully: deleteUserResponse}
+	} else {
+		ctx.status = status.BAD_REQUEST
+		ctx.body = {status: 'fail', userDeletedSuccessfully: deleteUserResponse}
+	}
 })
 
 // Assign all routes/endpoints to the Koa server

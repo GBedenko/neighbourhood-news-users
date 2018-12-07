@@ -34,7 +34,17 @@ describe('GET /users endpoint', async() => {
                                        {"_id": 2345, "username": "test123", password: "$2b$10$suODIB3P8hv379GqpHQaIukH9F2Q/fJ8//.mjp.SV91hyZrpUyQHe"}])
 
         done()
-	})
+    })
+
+    test('Requesting all users with a query returns an array of objects', async done => {
+        
+        const response = await request(usersAPI).get("/api/v1.0/users").send({"username": "test123"});
+
+        expect(response.body).toEqual([{"_id": 2345, "username": "test123", "password": "$2b$10$suODIB3P8hv379GqpHQaIukH9F2Q/fJ8//.mjp.SV91hyZrpUyQHe"}])
+        
+
+        done()
+    })
 })
 
 // Test HEAD /users
@@ -90,7 +100,16 @@ describe('GET /users/:user_id endpoint', async() => {
         expect(response.body).toEqual({"_id": 1234, "username": "test123", password: "$2b$10$suODIB3P8hv379GqpHQaIukH9F2Q/fJ8//.mjp.SV91hyZrpUyQHe"})
 
         done()
-	})
+    })
+    
+    test('Requesting a user that doesnt exist returns an empty object', async done => {
+        
+        const response = await request(usersAPI).get("/api/v1.0/users/6666");
+
+        expect(response.body).toEqual({})
+
+        done()
+    })
 })
 
 // Test POST /users
@@ -118,7 +137,16 @@ describe('POST /users endpoint', async() => {
         expect(response.body).toEqual({"status": "success", "userAddedSuccessfully": true})
 
         done()
-	})
+    })
+    
+    test('Sending an empty user returns a failed post request', async done => {
+        
+        const response = await request(usersAPI).post("/api/v1.0/users").send({})
+
+        expect(response.body).toEqual({"status": "fail", "userAddedSuccessfully": false})
+
+        done()
+    })
 })
 
 // Test PUT /users/:user_id
@@ -144,6 +172,15 @@ describe('PUT /users/:user_id endpoint', async() => {
         const response = await request(usersAPI).put("/api/v1.0/users/1234").send({"_id": 1234, "username": "new_username"})
 
         expect(response.body).toEqual({"status": "success", "userUpdatedSuccessfully": true})
+
+        done()
+	})  
+
+	test('Updating a user with an empty new object recieves a failed put request', async done => {
+
+        const response = await request(usersAPI).put("/api/v1.0/users/1234").send({})
+
+        expect(response.body).toEqual({"status": "fail", "userUpdatedSuccessfully": false})
 
         done()
 	})
@@ -172,6 +209,15 @@ describe('DELETE /users/:user_id endpoint', async() => {
         const response = await request(usersAPI).del("/api/v1.0/users/1234")
 
         expect(response.body).toEqual({"status": "success", "userDeletedSuccessfully": true})
+
+        done()
+    })
+
+	test('Deleting a user that doesnt exist returns a failed delete request', async done => {
+
+        const response = await request(usersAPI).del("/api/v1.0/users/6666")
+
+        expect(response.body).toEqual({"status": "fail", "userDeletedSuccessfully": false})
 
         done()
     })
